@@ -47,9 +47,11 @@ function SidebarComponent() {
           'fixed lg:static inset-y-0 left-0 z-50',
           'flex flex-col bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800',
           'transition-all duration-300 ease-in-out',
-          sidebarCollapsed ? 'w-20' : 'w-64',
-          sidebarCollapsed && 'lg:w-20',
-          !sidebarCollapsed && '-translate-x-full lg:translate-x-0'
+          // Mobile: full width when open, hidden when collapsed
+          // Desktop: w-64 normal, w-20 when collapsed
+          sidebarCollapsed 
+            ? '-translate-x-full lg:translate-x-0 lg:w-20' 
+            : 'translate-x-0 w-64'
         )}
       >
         {/* Logo */}
