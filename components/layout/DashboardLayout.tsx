@@ -28,7 +28,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       
       <div className={cn(
         'flex flex-col flex-1 min-w-0 transition-all duration-300',
-        sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-0'
+        // Add left margin on desktop to account for fixed sidebar
+        sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'
       )}>
         <Header />
         

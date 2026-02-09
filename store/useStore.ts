@@ -34,7 +34,7 @@ export const useDashboardStore = create<DashboardState>()(
   persist(
     (set, get) => ({
       // Initial UI State
-      sidebarCollapsed: false,
+      sidebarCollapsed: true,
       theme: 'light',
       userRole: 'admin',
       
