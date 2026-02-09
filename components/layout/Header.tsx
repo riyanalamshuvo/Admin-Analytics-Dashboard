@@ -2,11 +2,13 @@
 
 import { cn } from '@/lib/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { toggleSidebar, setUserRole } from '@/store/slices/uiSlice';
+import { toggleSidebar, toggleTheme, setUserRole } from '@/store/slices/uiSlice';
 import { UserDropdown } from '@/components/ui';
 import {
   Menu,
   Bell,
+  Sun,
+  Moon,
   User,
   Settings,
   LogOut,
@@ -17,9 +19,11 @@ import { memo, useState } from 'react';
 function HeaderComponent() {
   const dispatch = useAppDispatch();
   const userRole = useAppSelector((state) => state.ui.userRole);
+  const theme = useAppSelector((state) => state.ui.theme);
   const [hasNotifications] = useState(true);
 
   const handleToggleSidebar = () => dispatch(toggleSidebar());
+  const handleToggleTheme = () => dispatch(toggleTheme());
   const handleSetUserRole = (role: 'admin' | 'manager') => dispatch(setUserRole(role));
 
   return (
@@ -47,6 +51,20 @@ function HeaderComponent() {
           <Shield className="w-4 h-4 text-blue-500" />
           <span className="text-gray-700 dark:text-gray-300 capitalize">{userRole}</span>
         </div>
+
+        {/* Theme toggle */}
+        <button
+          onClick={handleToggleTheme}
+          className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+        >
+          {theme === 'light' ? (
+            <Moon className="w-5 h-5" />
+          ) : (
+            <Sun className="w-5 h-5" />
+          )}
+        </button>
 
         {/* Notifications */}
         <button className="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">

@@ -14,12 +14,15 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const sidebarCollapsed = useAppSelector((state) => state.ui.sidebarCollapsed);
   const theme = useAppSelector((state) => state.ui.theme);
 
-  // Apply theme class to document
+  // Apply theme class to document — ensures manual toggle overrides system preference
   useEffect(() => {
+    const root = document.documentElement;
     if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
+      root.classList.remove('light');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
+      root.classList.add('light');
     }
   }, [theme]);
 

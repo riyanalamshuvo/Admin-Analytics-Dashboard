@@ -174,19 +174,34 @@ const statsVariations = {
   },
 };
 
+// Simulated daily data for 7-day view
+const dailyRevenueData = [
+  { month: 'Mon', revenue: 1820, previousRevenue: 1650 },
+  { month: 'Tue', revenue: 1650, previousRevenue: 1520 },
+  { month: 'Wed', revenue: 2100, previousRevenue: 1800 },
+  { month: 'Thu', revenue: 1950, previousRevenue: 1780 },
+  { month: 'Fri', revenue: 2300, previousRevenue: 2050 },
+  { month: 'Sat', revenue: 1480, previousRevenue: 1350 },
+  { month: 'Sun', revenue: 1150, previousRevenue: 1080 },
+];
+
+const dailyOrderData = [
+  { month: 'Mon', orders: 14 },
+  { month: 'Tue', orders: 11 },
+  { month: 'Wed', orders: 16 },
+  { month: 'Thu', orders: 13 },
+  { month: 'Fri', orders: 18 },
+  { month: 'Sat', orders: 8 },
+  { month: 'Sun', orders: 6 },
+];
+
 // Helper function to get data based on date range
 const getDataByDateRange = (dateRange: DateRange) => {
   switch (dateRange) {
     case '7days':
       return {
-        revenueData: fullRevenueData.slice(-1).map((d, i) => ({
-          ...d,
-          month: `Day ${i + 1}`,
-        })),
-        orderData: fullOrderData.slice(-1).map((d, i) => ({
-          ...d,
-          month: `Day ${i + 1}`,
-        })),
+        revenueData: dailyRevenueData,
+        orderData: dailyOrderData,
       };
     case '30days':
       return {
