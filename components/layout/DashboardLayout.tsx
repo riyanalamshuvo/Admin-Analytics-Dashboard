@@ -3,7 +3,7 @@
 import { ReactNode, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
-import { useDashboardStore } from '@/store/useStore';
+import { useAppSelector } from '@/store/hooks';
 import { cn } from '@/lib/utils';
 
 interface DashboardLayoutProps {
@@ -11,7 +11,8 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { sidebarCollapsed, theme } = useDashboardStore();
+  const sidebarCollapsed = useAppSelector((state) => state.ui.sidebarCollapsed);
+  const theme = useAppSelector((state) => state.ui.theme);
 
   // Apply theme class to document
   useEffect(() => {

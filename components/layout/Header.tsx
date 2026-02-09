@@ -1,7 +1,8 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useDashboardStore } from '@/store/useStore';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { toggleSidebar, setUserRole } from '@/store/slices/uiSlice';
 import { UserDropdown } from '@/components/ui';
 import {
   Menu,
@@ -14,8 +15,12 @@ import {
 import { memo, useState } from 'react';
 
 function HeaderComponent() {
-  const { toggleSidebar, userRole, setUserRole } = useDashboardStore();
+  const dispatch = useAppDispatch();
+  const userRole = useAppSelector((state) => state.ui.userRole);
   const [hasNotifications] = useState(true);
+
+  const handleToggleSidebar = () => dispatch(toggleSidebar());
+  const handleSetUserRole = (role: 'admin' | 'manager') => dispatch(setUserRole(role));
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between px-4 sm:px-6 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
@@ -23,7 +28,7 @@ function HeaderComponent() {
       <div className="flex items-center gap-4">
         {/* Mobile menu toggle */}
         <button
-          onClick={toggleSidebar}
+          onClick={handleToggleSidebar}
           className="lg:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
         >
           <Menu className="w-5 h-5" />
@@ -84,7 +89,7 @@ function HeaderComponent() {
               Switch Role
             </p>
             <button
-              onClick={() => setUserRole('admin')}
+              onClick={() => handleSetUserRole('admin')}
               className={cn(
                 'w-full flex items-center gap-2 px-2 py-2 text-sm rounded-lg transition-colors',
                 userRole === 'admin'
@@ -96,7 +101,7 @@ function HeaderComponent() {
               Admin
             </button>
             <button
-              onClick={() => setUserRole('manager')}
+              onClick={() => handleSetUserRole('manager')}
               className={cn(
                 'w-full flex items-center gap-2 px-2 py-2 text-sm rounded-lg transition-colors',
                 userRole === 'manager'

@@ -1,7 +1,8 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useDashboardStore } from '@/store/useStore';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { toggleSidebar } from '@/store/slices/uiSlice';
 import {
   LayoutDashboard,
   Users,
@@ -29,7 +30,11 @@ const secondaryNavigation = [
 ];
 
 function SidebarComponent() {
-  const { sidebarCollapsed, toggleSidebar, userRole } = useDashboardStore();
+  const dispatch = useAppDispatch();
+  const sidebarCollapsed = useAppSelector((state) => state.ui.sidebarCollapsed);
+  const userRole = useAppSelector((state) => state.ui.userRole);
+  
+  const handleToggleSidebar = () => dispatch(toggleSidebar());
 
   return (
     <>
@@ -37,7 +42,7 @@ function SidebarComponent() {
       {!sidebarCollapsed && (
         <div
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-          onClick={toggleSidebar}
+          onClick={handleToggleSidebar}
         />
       )}
 
@@ -118,7 +123,7 @@ function SidebarComponent() {
 
         {/* Collapse button - Desktop only */}
         <button
-          onClick={toggleSidebar}
+          onClick={handleToggleSidebar}
           className={cn(
             'hidden lg:flex absolute -right-3 top-20 h-6 w-6 items-center justify-center',
             'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full',

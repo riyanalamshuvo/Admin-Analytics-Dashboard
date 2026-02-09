@@ -2,10 +2,11 @@
 
 import { memo } from 'react';
 import { Dropdown, Button } from '@/components/ui';
-import { useDashboardStore } from '@/store/useStore';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setDateRange, setUserType, fetchDashboardData } from '@/store/slices/dashboardSlice';
 import { exportToCSV } from '@/data/mockData';
 import { Download, RefreshCw } from 'lucide-react';
-import type { DateRange, UserType } from '@/types';
+import type { DateRange as DateRangeType, UserType as UserTypeEnum } from '@/types';
 
 const dateRangeOptions = [
   { value: '7days', label: 'Last 7 days' },
@@ -21,15 +22,15 @@ const userTypeOptions = [
 ];
 
 function FilterSectionComponent() {
-  const {
-    dateRange,
-    userType,
-    setDateRange,
-    setUserType,
-    fetchData,
-    isLoading,
-    dashboardData,
-  } = useDashboardStore();
+  const dispatch = useAppDispatch();
+  const dateRange = useAppSelector((state) => state.dashboard.dateRange);
+  const userType = useAppSelector((state) => state.dashboard.userType);
+  const isLoading = useAppSelector((state) => state.dashboard.isLoading);
+  const dashboardData = useAppSelector((state) => state.dashboard.dashboardData);
+
+  const handleRefresh = () => {
+    dispatch(fetchDashboardData({ dateRange, userType }));
+  };
 
   const handleExport = () => {
     if (dashboardData) {
@@ -38,20 +39,28 @@ function FilterSectionComponent() {
     }
   };
 
+  const handleDateRangeChange = (value: string) => {
+    dispatch(setDateRange(value as DateRangeType));
+  };
+
+  const handleUserTypeChange = (value: string) => {
+    dispatch(setUserType(value as UserTypeEnum));
+  };
+
   return (
     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
       <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
         <Dropdown
           options={dateRangeOptions}
           value={dateRange}
-          onChange={(value) => setDateRange(value as DateRange)}
+          onChange={handleDateRangeChange}
           className="w-full sm:w-44"
           label="Date Range"
         />
         <Dropdown
           options={userTypeOptions}
           value={userType}
-          onChange={(value) => setUserType(value as UserType)}
+          onChange={handleUserTypeChange}
           className="w-full sm:w-44"
           label="User Type"
         />
@@ -61,7 +70,7 @@ function FilterSectionComponent() {
         <Button
           variant="outline"
           size="md"
-          onClick={fetchData}
+          onClick={handleRefresh}
           disabled={isLoading}
           className="flex-1 sm:flex-initial"
         >

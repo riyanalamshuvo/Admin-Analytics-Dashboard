@@ -6,19 +6,25 @@ import { KPISection } from '@/components/kpi';
 import { RevenueChart, OrdersChart, UserDistributionChart, TrafficSourceChart } from '@/components/charts';
 import { FilterSection } from '@/components/filters';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { useDashboardStore } from '@/store/useStore';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchDashboardData, clearError } from '@/store/slices/dashboardSlice';
 
 export default function DashboardPage() {
-  const { dashboardData, isLoading, error, fetchData, clearError } = useDashboardStore();
+  const dispatch = useAppDispatch();
+  const dashboardData = useAppSelector((state) => state.dashboard.dashboardData);
+  const isLoading = useAppSelector((state) => state.dashboard.isLoading);
+  const error = useAppSelector((state) => state.dashboard.error);
+  const dateRange = useAppSelector((state) => state.dashboard.dateRange);
+  const userType = useAppSelector((state) => state.dashboard.userType);
 
   // Fetch data on mount
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    dispatch(fetchDashboardData({ dateRange, userType }));
+  }, [dispatch, dateRange, userType]);
 
   const handleRetry = () => {
-    clearError();
-    fetchData();
+    dispatch(clearError());
+    dispatch(fetchDashboardData({ dateRange, userType }));
   };
 
   return (
