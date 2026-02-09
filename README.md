@@ -130,7 +130,7 @@ npm run build
 npm run start
 ```
 
-## 📊 Data Flow
+##  Data Flow
 
 1. **Initial Load**: Dashboard fetches data on mount via `fetchData()` action
 2. **Filter Changes**: Selecting a new filter triggers automatic data refetch
